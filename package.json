@@ -1,0 +1,36 @@
+{
+  "name": "alarabiya-image-upload-service",
+  "version": "1.0.0",
+  "description": "A simple service to upload images to S3 storage.",
+  "repository": "https://github.com/mdwekat/image-upload-service.git",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./build/index.js",
+    "build": "tsc",
+    "dev": "pm2 start ./server.js --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.594.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "md5": "^2.2.1",
+    "morgan": "^1.9.1",
+    "multer": "^1.4.2",
+    "pm2": "^4.2.1",
+    "sharp": "^0.23.4",
+    "uuid": "^3.3.3"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.2",
+    "@types/md5": "^2.1.33",
+    "@types/morgan": "^1.7.37",
+    "@types/multer": "^1.3.10",
+    "@types/node": "^12.12.21",
+    "@types/sharp": "^0.23.1",
+    "@types/uuid": "^3.4.6"
+  }
+}

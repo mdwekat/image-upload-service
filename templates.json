@@ -1,0 +1,22 @@
+[
+  {
+    "output": "webp",
+    "aspectRatio": "1:2"
+  },
+  {
+    "output": "webp",
+    "aspectRatio": "4:3"
+  },
+  {
+    "output": "webp",
+    "aspectRatio": "16:9"
+  },
+  {
+    "output": "jpg",
+    "aspectRatio": "4:3"
+  },
+  {
+    "output": "jpg",
+    "aspectRatio": "16:9"
+  }
+]
