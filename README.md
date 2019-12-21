@@ -6,7 +6,7 @@ This service is built with `typescript` and uses Node.js runtime it can run on a
 
 However there are a couple of ways that you can run the service
 
-## Useng Docker
+## Useng Docker (Recomanded)
 1. Make sure that you have docker on your machine.
 2. Make sure that MonogoDB installed and running with database `images-data` created.
 3. Clone or downlod the repo.
@@ -39,7 +39,7 @@ Note: I have created all the needed keys and dtabases they will be included in t
 7. open the file and change the values of each key to your values.
 5. Run:
 ```shell script
-npm install && npm start
+npm install && npm run build && npm start
 ```
 # Using the service
 
