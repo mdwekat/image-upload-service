@@ -5,6 +5,7 @@ import cors from 'cors';
 import {IImage} from "IImage";
 import {IMedia} from "IMedia";
 import mongoose from "mongoose";
+import * as path from "path";
 import ITemplate from "./types/Template";
 import express from "express";
 import morgan from 'morgan';
@@ -52,11 +53,21 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.get('/', (req: Request, res: Response) => res.send("Hello, Alarabiay"));
-app.post('/upload', upload.single('images'), async (req: Request, res: Response) => {
-    try {
+app.use(express.static('public'));
 
-        const file = req.file;
+app.get('/', (req: Request, res: Response) => res.send("Hello, Alarabiay"));
+app.post('/upload', upload.fields([{name: 'images[]'}, {name: 'images'}]), async (req: Request, res: Response) => {
+    try {
+        const {files} = req;
+        let file = null;
+        if ((<any>files)['images[]']) {
+            file = (<any>files)['images[]'][0]
+        } else if ((<any>files)['images']) {
+            file = (<any>files)['images'][0]
+        }
+        if (!file) {
+            res.status(500).json({status: 500, message: 'no files provided'})
+        }
         const filename = file.originalname;
         const pid = uuid();
         const fileIdintifier = md5(pid);
@@ -113,7 +124,7 @@ app.get('/image/:id', async (req: Request, res: Response) => {
  * Get the list of avilable iamges
  */
 app.get('/image', async (req: Request, res: Response) => {
-    const images: IImage[] = await Image.find({});
+    const images: IImage[] = await Image.find({}).sort({createdAt: -1});
     res.send(images);
 });
 

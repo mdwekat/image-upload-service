@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Image Manager</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <h1>Image manager</h1>
+    <div class="">
+        <a href="/html/file-upload.html">Upload image</a>
+        <hr/>
+        <div id="app">
+            <ul>
+                <li v-for="image in images" class="list-group-item">
+                    <div class="media">
+                        <img class="thumb media-left mr-3" width="100" v-bind:src="image.media[0].cdnImage"/>
+                        <div class="media-body">
+                            <p><span class="text-muted mr-2">Title:</span>{{image.title}}</p>
+                            <p><span class="text-muted mr-2">Description:</span>{{image.description}}</p>
+                            <button v-on:click="edit(image)">Edit</button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <div v-if="showModal" class="modal" style="display: initial" tabindex="-1" role="dialog"
+                 aria-labelledby="mySmallModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Edit Image metadata</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true" v-on:click="showModal=false;image={}">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label>Ttile</label>
+                                    <input class="form-control" v-model="image.title">
+                                </div>
+                                <div class="form-group">
+                                    <label>Description</label>
+                                    <input class="form-control" v-model="image.description">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary"
+                                    v-on:click="save()">Save changes
+                            </button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                    v-on:click="showModal=false;image={}">Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js" type="application/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js" type="application/javascript"></script>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            message: 'Hello Vue!',
+            images: [],
+            image: {},
+            showModal: false
+        },
+        mounted: function () {
+            axios.get('/image').then(res => this.$data.images = res.data)
+        },
+        methods: {
+            edit: function (data) {
+                this.$data.showModal = true;
+                this.$data.image = data;
+                console.log(data)
+            },
+            save: function () {
+                axios.put('/image/' + this.$data.image._id, {
+                    title: this.$data.image.title,
+                    description: this.$data.image.description
+                }).then(res => {
+                    this.$data.showModal = false;
+                    this.$data.image = {}
+                })
+            }
+        }
+    })
+</script>
+</body>
+</html>
