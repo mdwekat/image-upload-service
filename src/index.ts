@@ -5,7 +5,6 @@ import cors from 'cors';
 import {IImage} from "IImage";
 import {IMedia} from "IMedia";
 import mongoose from "mongoose";
-import * as path from "path";
 import ITemplate from "./types/Template";
 import express from "express";
 import morgan from 'morgan';
@@ -151,3 +150,4 @@ app.use("*", (req: Request, res: Response) => {
 
 app.listen(process.env.PORT || 3000, () => console.log(`App started and listing to port ${process.env.PORT || 3000}`));
 
+export default app;
