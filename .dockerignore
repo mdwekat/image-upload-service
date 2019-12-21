@@ -1,7 +1,5 @@
 # Created by .ignore support plugin (hsz.mobi)
-# IDE files
-.idea
-
+### Node template
 # Logs
 logs
 *.log
@@ -40,7 +38,6 @@ bower_components
 
 # Compiled binary addons (https://nodejs.org/api/addons.html)
 build/Release
-build
 
 # Dependency directories
 node_modules/
@@ -108,12 +105,3 @@ dist
 # TernJS port file
 .tern-port
 
-.gitignore
-package-lock.json
-package.json
-server.js
-
-# Elastic Beanstalk Files
-.elasticbeanstalk/*
-!.elasticbeanstalk/*.cfg.yml
-!.elasticbeanstalk/*.global.yml

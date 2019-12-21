@@ -10,6 +10,9 @@ export default class StorageDriver implements IStorageDriver {
 
     constructor() {
         //configuring the AWS environment
+        if (!process.env.AWS_ACCESSKEY_ID || !process.env.AWS_SECRET_ACCESS_KEY) {
+            throw new Error('Missing AWS_ACCESSKEY_ID or AWS_SECRET_ACCESS_KEY')
+        }
         AWS.config.update({
             accessKeyId: process.env.AWS_ACCESSKEY_ID,
             secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,

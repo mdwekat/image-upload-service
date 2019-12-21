@@ -1,5 +1,4 @@
 import sharp from 'sharp';
-import ITemplate from "Template";
 import IStorageDriver from "./types/StorageDriver";
 
 export default class ImageProcessor {
@@ -17,6 +16,9 @@ export default class ImageProcessor {
      * @return {Promise<void>}
      */
     TransformAndSave(image: sharp.Sharp, metadata: sharp.Metadata, fileIdintifier: string, output: string = null, aspectRatio: string = "4:3"): Promise<any> {
+        if (!process.env.S3_BUCKET_NAME) {
+            throw new Error('Missing S3_BUCKET_NAME env variable');
+        }
         const bucketName = process.env.S3_BUCKET_NAME;
         const cdnBaseURL = process.env.CDN_BASE_URL;
         const mimeType = (output !== 'webp') ? 'image/webp' : 'image/jpeg';
@@ -39,7 +41,6 @@ export default class ImageProcessor {
 
                 const imageBuffer = await pipe.toBuffer();
 
-
                 const imageData = await this.storageDriver.save({
                     Bucket: bucketName,
                     Body: imageBuffer,
@@ -48,7 +49,7 @@ export default class ImageProcessor {
                 });
                 resolve({
                     ...imageData,
-                    cdnImage: `${cdnBaseURL}/${output}/${aspectRatio.replace(':', '-')}/${fileIdintifier}.${output}`
+                    cdnImage: process.env.CDN_BASE_URL && `${cdnBaseURL}/${output}/${aspectRatio.replace(':', '-')}/${fileIdintifier}.${output}`
                 })
             } catch (error) {
                 reject(error);

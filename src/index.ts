@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import fs from 'fs';
 import {Response, Request} from "express";
 import ITemplate from "./types/Template";
 import express from "express";
@@ -7,12 +8,13 @@ import md5 from 'md5';
 import uuid from 'uuid';
 import multer from 'multer';
 import sharp from 'sharp';
-import fs from 'fs';
 import StorageDriver from './StorageDriver';
 import ImageProcessor from './ImageProcessor';
-import * as imageTemplates from '../templates.json' // This file contain the templates of the output images
+
+const imageTemplates = require('../templates.json'); // This file contain the templates of the output images
 
 if (fs.existsSync(".env")) {
+    console.log('Getting config from .env file.');
     dotenv.config({path: ".env"});
 }
 
@@ -28,7 +30,7 @@ const app = express();
 app.use(morgan('dev'));
 
 app.get('/', (req: Request, res: Response) => res.send("Hello, Alarabiay"));
-app.post('/', upload.single('images'), async (req: Request, res: Response) => {
+app.post('/upload', upload.single('images'), async (req: Request, res: Response) => {
     try {
 
         const file = req.file;
@@ -53,7 +55,14 @@ app.post('/', upload.single('images'), async (req: Request, res: Response) => {
     }
 });
 
+app.use("*", (req: Request, res: Response) => {
+    res.status(404).json({
+        status: 404,
+        message: "page not found"
+    });
+});
+
 
 // TODO: Normalize port
-app.listen(process.env.port || 3000, () => console.log(`App started and listing to port ${process.env.port || 3000}`));
+app.listen(process.env.PORT || 3000, () => console.log(`App started and listing to port ${process.env.PORT || 3000}`));
 
